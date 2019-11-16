@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Lab03ED2.DBContext;
+using Lab03ED2.Services;
 
 namespace Lab03ED2.Controllers
 {
@@ -13,6 +14,12 @@ namespace Lab03ED2.Controllers
     public class PizzaController : ControllerBase
     {
         public DefaultConnection db = DefaultConnection.getInstance;
+        private readonly PizzaService _pizzaService;
+
+        public PizzaController(PizzaService pizzaService)
+        {
+            _pizzaService = pizzaService;
+        }
 
         // GET: api/Pizza
         [HttpGet]
@@ -22,20 +29,28 @@ namespace Lab03ED2.Controllers
             //aux.Nombre = "Pizza1";
             //aux.Tamanio = "Pequenia";
             //db.Listadopizzas.Add(aux);
-            if (db.Listadopizzas.Count == 0)
+            if (_pizzaService.Get().Count == 0)
                 return NotFound();
-            return Ok(db.Listadopizzas.ToArray());
+            return Ok(_pizzaService.Get().ToArray());
         }
 
         // GET: api/Pizza/5
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(int id)
         {
-            if (db.Listadopizzas.Count == 0)
+            if (_pizzaService.Get().Count == 0)
                 return NotFound();
-            if (db.Listadopizzas.Count < id-1 || id < 0)
+            if (_pizzaService.Get().Count < id-1 || id < 0)
                 return NotFound();
-            return Ok(db.Listadopizzas[id]);
+
+            var pizza = _pizzaService.Get(id);
+
+            if (pizza == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(pizza);
         }
 
         // POST: api/Pizza
@@ -46,8 +61,9 @@ namespace Lab03ED2.Controllers
                 return BadRequest("Tipo de dato no valido");
             if (value.Ingredientes == null|| value.Nombre == null || value.Cantidad_Porciones == 0 || value.Ingredientes == null || value.Tamanio == null || value.Tipo_Masa == null)
                 return BadRequest("Valores no validos");
-            db.Listadopizzas.Add(value);
-            return Ok(value);
+            value.Id = db.obtenerId();
+            _pizzaService.Create(value);
+            return Ok(CreatedAtRoute("GetPizza", new { id = value.Id.ToString() }, value));
         }
 
         // PUT: api/Pizza/5
@@ -60,9 +76,16 @@ namespace Lab03ED2.Controllers
                 return NotFound();
             if (value.Ingredientes == null || value.Nombre == null || value.Cantidad_Porciones == 0 || value.Ingredientes == null || value.Tamanio == null || value.Tipo_Masa == null)
                 return BadRequest("Valores no validos");
-            db.Listadopizzas.RemoveAt(id);
-            db.Listadopizzas.Insert(id, value);
-            return Ok(db.Listadopizzas[id]);
+            var pizza = _pizzaService.Get(id);
+
+            if (pizza == null)
+            {
+                return NotFound();
+            }
+            value.Id = id;
+            _pizzaService.Update(id, value);
+
+            return Ok();
         }
 
         // DELETE: api/ApiWithActions/5
@@ -73,7 +96,14 @@ namespace Lab03ED2.Controllers
                 return NotFound();
             if (db.Listadopizzas.Count < id - 1 || id < 0)
                 return NotFound();
-            db.Listadopizzas.RemoveAt(id);
+
+            var pizza = _pizzaService.Get(id);
+            if (pizza == null)
+            {
+                return NotFound();
+            }
+            _pizzaService.Remove(pizza.Id);
+
             return Ok();
         }
     }

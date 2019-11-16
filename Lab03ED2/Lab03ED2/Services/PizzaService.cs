@@ -22,7 +22,7 @@ namespace Lab03ED2.Services
         public List<Pizza> Get() =>
             _pizza.Find(pizza => true).ToList();
 
-        public Pizza Get(string id) =>
+        public Pizza Get(int id) =>
             _pizza.Find<Pizza>(pizza => pizza.Id == id).FirstOrDefault();
 
         public Pizza Create(Pizza pizza)
@@ -31,13 +31,13 @@ namespace Lab03ED2.Services
             return pizza;
         }
 
-        public void Update(string id, Pizza pizzaIn) =>
+        public void Update(int id, Pizza pizzaIn) =>
             _pizza.ReplaceOne(pizza => pizza.Id == id, pizzaIn);
 
         public void Remove(Pizza pizzaIn) =>
             _pizza.DeleteOne(pizza => pizza.Id == pizzaIn.Id);
 
-        public void Remove(string id) =>
+        public void Remove(int id) =>
             _pizza.DeleteOne(pizza => pizza.Id == id);
     }
 }

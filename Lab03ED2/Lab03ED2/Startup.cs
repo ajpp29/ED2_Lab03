@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Lab03ED2.Models;
+using Lab03ED2.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +33,8 @@ namespace Lab03ED2
 
             services.AddSingleton<IPizzaDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<PizzaDatabaseSettings>>().Value);
+
+            services.AddSingleton<PizzaService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

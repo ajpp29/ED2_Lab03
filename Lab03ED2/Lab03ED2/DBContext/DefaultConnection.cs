@@ -12,6 +12,15 @@ namespace Lab03ED2.DBContext
 
         public List<Models.Pizza> Listadopizzas = new List<Models.Pizza>();
 
+        private static int getId { get; set; }
+
+        public int obtenerId()
+        {
+            var id = getId;
+            getId++;
+            return id;
+        }
+
         public static DefaultConnection getInstance
         {
             get
