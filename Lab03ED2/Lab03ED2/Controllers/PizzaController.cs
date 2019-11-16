@@ -18,10 +18,10 @@ namespace Lab03ED2.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            Models.Pizza aux = new Models.Pizza();
-            aux.Nombre = "Pizza1";
-            aux.Tamanio = "Pequenia";
-            db.Listadopizzas.Add(aux);
+            //Models.Pizza aux = new Models.Pizza();
+            //aux.Nombre = "Pizza1";
+            //aux.Tamanio = "Pequenia";
+            //db.Listadopizzas.Add(aux);
             if (db.Listadopizzas.Count == 0)
                 return NotFound();
             return Ok(db.Listadopizzas.ToArray());
@@ -47,7 +47,7 @@ namespace Lab03ED2.Controllers
             if (value.Ingredientes == null|| value.Nombre == null || value.Cantidad_Porciones == 0 || value.Ingredientes == null || value.Tamanio == null || value.Tipo_Masa == null)
                 return BadRequest("Valores no validos");
             db.Listadopizzas.Add(value);
-            return Ok();
+            return Ok(value);
         }
 
         // PUT: api/Pizza/5
@@ -60,6 +60,7 @@ namespace Lab03ED2.Controllers
                 return NotFound();
             if (value.Ingredientes == null || value.Nombre == null || value.Cantidad_Porciones == 0 || value.Ingredientes == null || value.Tamanio == null || value.Tipo_Masa == null)
                 return BadRequest("Valores no validos");
+            db.Listadopizzas.RemoveAt(id);
             db.Listadopizzas.Insert(id, value);
             return Ok(db.Listadopizzas[id]);
         }
