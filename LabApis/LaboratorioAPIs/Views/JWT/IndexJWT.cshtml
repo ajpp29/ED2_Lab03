@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "IndexJWT";
+}
+
+<h2>Generar Json Web Token </h2>
+<hr />
+
+<form method="post" enctype="multipart/form-data" asp-controller="JWT" asp-action="IndexJWT">
+    <b><p align="left">Ingrese una llave que tenga minimo 16 caracteres</p></b>
+    <input type="text" name="llave" />
+
+    <br /><br /><br />
+
+    <b><p align="left">Suba un archivo en formato JSON</p></b>
+    <b>
+        <p align="left">
+            @Html.TextBox("file", "", new { type = "file" }) <br />
+
+        </p>
+    </b>
+    <b>
+</form>
+<input type="submit" value="Subir" />
+<p>@ViewBag.EstatusDeSubida</p>
+
+
+<br /><br /><br />
+<label>JWT: </label>
+<textarea>@ViewBag.Token</textarea>
+
