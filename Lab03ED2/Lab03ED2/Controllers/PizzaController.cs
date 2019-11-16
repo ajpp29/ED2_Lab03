@@ -44,7 +44,7 @@ namespace Lab03ED2.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest("Tipo de dato no valido");
-            if (value.Nombre == null || value.Cantidad_Porciones == 0 || value.Ingredientes == null || value.Tamanio == null || value.Tipo_Masa == null)
+            if (value.Ingredientes == null|| value.Nombre == null || value.Cantidad_Porciones == 0 || value.Ingredientes == null || value.Tamanio == null || value.Tipo_Masa == null)
                 return BadRequest("Valores no validos");
             db.Listadopizzas.Add(value);
             return Ok();
@@ -58,7 +58,7 @@ namespace Lab03ED2.Controllers
                 return BadRequest("Tipo de dato no valido");
             if (db.Listadopizzas.Count < id - 1 || id < 0)
                 return NotFound();
-            if (value.Nombre == null || value.Cantidad_Porciones == 0 || value.Ingredientes == null || value.Tamanio == null || value.Tipo_Masa == null)
+            if (value.Ingredientes == null || value.Nombre == null || value.Cantidad_Porciones == 0 || value.Ingredientes == null || value.Tamanio == null || value.Tipo_Masa == null)
                 return BadRequest("Valores no validos");
             db.Listadopizzas.Insert(id, value);
             return Ok(db.Listadopizzas[id]);
