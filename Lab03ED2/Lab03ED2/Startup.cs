@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Lab03ED2.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,6 +26,13 @@ namespace Lab03ED2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // requires using Microsoft.Extensions.Options
+            services.Configure<PizzaDatabaseSettings>(
+                Configuration.GetSection(nameof(PizzaDatabaseSettings)));
+
+            services.AddSingleton<IPizzaDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<PizzaDatabaseSettings>>().Value);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
