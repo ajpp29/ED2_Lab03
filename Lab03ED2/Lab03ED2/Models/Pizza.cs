@@ -7,12 +7,12 @@ namespace Lab03ED2.Models
 {
     public class Pizza
     {
-        string Nombre { get; set; }
-        string Descripcion { get; set; }
-        string[] Ingredientes { get; set; }
-        string Tipo_Masa { get; set; }
-        string Tamanio { get; set; }
-        int Cantidad_Porciones { get; set; }
-        bool Extra_Queso { get; set; }
+        public string Nombre { get; set; }
+        public string Descripcion { get; set; }
+        public string[] Ingredientes { get; set; }
+        public string Tipo_Masa { get; set; }
+        public string Tamanio { get; set; }
+        public int Cantidad_Porciones { get; set; }
+        public bool Extra_Queso { get; set; }
     }
 }

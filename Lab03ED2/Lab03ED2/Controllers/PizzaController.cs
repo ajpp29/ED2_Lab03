@@ -18,20 +18,30 @@ namespace Lab03ED2.Controllers
         [HttpGet]
         public IEnumerable<Models.Pizza> Get()
         {
+            Models.Pizza aux = new Models.Pizza();
+            aux.Nombre = "Pizza1";
+            aux.Tamanio = "Pequenia";
+            db.Listadopizzas.Add(aux);
             return db.Listadopizzas.ToArray();
         }
 
         // GET: api/Pizza/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            return Ok(db.Listadopizzas[id]);
         }
 
         // POST: api/Pizza
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] Models.Pizza value)
         {
+            if (!ModelState.IsValid)
+                return BadRequest("Tipo de dato no valido");
+            if (value.Nombre == null || value.Cantidad_Porciones == 0 || value.Ingredientes == null || value.Tamanio == null || value.Tipo_Masa == null)
+                return BadRequest("Tipo de dato no valido");
+            db.Listadopizzas.Add(value);
+            return Ok();
         }
 
         // PUT: api/Pizza/5
